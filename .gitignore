@@ -54,3 +54,4 @@ node_modules/
 .opendserver/
 /edit_task_log.txt
 /local/status_titles_1.json
+/local/status_titles_2.json
