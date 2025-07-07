@@ -1,0 +1,54 @@
+# Системные файлы macOS / Windows
+.DS_Store
+Thumbs.db
+
+# IDE и редакторы
+.idea/
+.vscode/
+
+# Composer, npm, etc.
+vendor/
+node_modules/
+
+# Bitrix кеш, временные и служебные папки
+/bitrix/cache/
+/bitrix/managed_cache/
+/bitrix/stack_cache/
+/bitrix/tmp/
+/bitrix/updates/
+/upload/
+/local/cache/
+/local/tmp/
+/upload_resize_cache/
+/upload/webp_cache/
+
+/bitrix/modules/tmp/
+*.log
+
+# Файлы обновлений и установок
+/bitrix/setup/
+/bitrix/php_interface/dbconn.php
+/bitrix/php_interface/after_connect.php
+/bitrix/php_interface/init.php
+
+# Бэкапы и архивы
+*.zip
+*.tar
+*.gz
+*.bak
+*.old
+*.tmp
+
+# Лог-файлы
+*.log
+/var/log/
+
+# Конфигурация сервера/локальной среды
+.env
+.env.local
+.env.*
+
+# Валет / MAMP / OpenServer и прочее
+.valet/
+.mamp/
+.opendserver/
