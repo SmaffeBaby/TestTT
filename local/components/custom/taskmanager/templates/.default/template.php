@@ -9,19 +9,37 @@ foreach ($arResult['TASKS'] as $task) {
     $grouped[$task['STATUS']][] = $task;
 }
 
+// Читаем кастомные названия статусов, если есть
+$customStatusTitles = [];
+$file = $_SERVER['DOCUMENT_ROOT'].'/local/status_titles.json';
+if (file_exists($file)) {
+    $json = file_get_contents($file);
+    $customStatusTitles = json_decode($json, true);
+}
+
 $statusTitles = [
-    'task_to_do' => 'Надо сделать',
-    'task_done' => 'Выполнено',
-    'task_closed' => 'Завершено'
+    'task_to_do' => $customStatusTitles['task_to_do'] ?? 'Надо сделать',
+    'task_done' => $customStatusTitles['task_done'] ?? 'Выполнено',
+    'task_closed' => $customStatusTitles['task_closed'] ?? 'Завершено',
 ];
 ?>
+
 
 <div class="container mt-4">
     <h3 class="mb-4">📋 Мои задачи</h3>
     <div class="row">
         <?php foreach ($grouped as $status => $tasks): ?>
             <div class="col-md-4">
-                <h5><?= $statusTitles[$status] ?></h5>
+                <div class="status-header position-relative mb-3" style="padding-right: 30px;">
+                    <h5 class="d-inline"><?= $statusTitles[$status] ?></h5>
+                    <button class="btn btn-sm btn-outline-secondary edit-status-btn position-absolute"
+                            style="top: 0; right: 0; display: none;"
+                            data-status="<?= $status ?>"
+                            data-title="<?= htmlspecialcharsbx($statusTitles[$status]) ?>"
+                            title="Редактировать статус">
+                        ✏️
+                    </button>
+                </div>
                 <?php if (!empty($tasks)): ?>
                     <ul class="list-group mb-4">
                         <?php foreach ($tasks as $task): ?>
@@ -72,10 +90,11 @@ $statusTitles = [
                 <div class="mb-3">
                     <label for="status" class="form-label">Статус</label>
                     <select class="form-select" name="status" required>
-                        <option value="task_to_do">Надо сделать</option>
-                        <option value="task_done">Выполнено</option>
-                        <option value="task_closed">Завершено</option>
+                        <?php foreach ($statusTitles as $key => $title): ?>
+                            <option value="<?= $key ?>"><?= htmlspecialcharsbx($title) ?></option>
+                        <?php endforeach; ?>
                     </select>
+
                 </div>
                 <div class="mb-3">
                     <label for="name" class="form-label">Название задачи</label>
@@ -111,9 +130,9 @@ $statusTitles = [
                 <div class="mb-3">
                     <label class="form-label">Статус</label>
                     <select class="form-select" name="status" required>
-                        <option value="task_to_do">Надо сделать</option>
-                        <option value="task_done">Выполнено</option>
-                        <option value="task_closed">Завершено</option>
+                        <?php foreach ($statusTitles as $key => $title): ?>
+                            <option value="<?= $key ?>"><?= htmlspecialcharsbx($title) ?></option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="mb-3">
@@ -136,6 +155,29 @@ $statusTitles = [
         </form>
     </div>
 </div>
+
+
+<div class="modal fade" id="editStatusModal" tabindex="-1" aria-labelledby="editStatusModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form id="edit-status-form" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Редактировать название статуса</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="status_key">
+                <div class="mb-3">
+                    <label class="form-label" for="status-title-input">Название статуса</label>
+                    <input type="text" class="form-control" name="status_title" id="status-title-input" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 
 
 <script>
@@ -203,7 +245,7 @@ $statusTitles = [
 
         const form = document.getElementById('edit-task-form');
         const id = form.querySelector('[name="id"]').value;
-        const status = form.querySelector('[name="old_status"]').value; // чтобы знать из какого HL-блока удалять
+        const status = form.querySelector('[name="old_status"]').value;
 
         if (!id || !status) {
             alert('Не удалось определить задачу для удаления');
@@ -222,6 +264,41 @@ $statusTitles = [
             .then(result => {
                 if (result.success) {
                     alert('Задача удалена');
+                    location.reload();
+                } else {
+                    alert('Ошибка: ' + result.error);
+                }
+            })
+            .catch(() => alert('Сбой запроса'));
+    });
+
+
+    document.querySelectorAll('.edit-status-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const modal = new bootstrap.Modal(document.getElementById('editStatusModal'));
+            const form = document.getElementById('edit-status-form');
+
+            form.status_key.value = button.dataset.status;
+            form.status_title.value = button.dataset.title;
+
+            modal.show();
+        });
+    });
+
+    document.getElementById('edit-status-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const form = e.target;
+        const formData = new FormData(form);
+
+        fetch('/local/components/custom/taskmanager/ajax/edit_status.php', {
+            method: 'POST',
+            body: formData
+        })
+            .then(res => res.json())
+            .then(result => {
+                if (result.success) {
+                    alert('Название статуса обновлено!');
                     location.reload();
                 } else {
                     alert('Ошибка: ' + result.error);

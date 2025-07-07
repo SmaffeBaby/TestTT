@@ -1,0 +1,4 @@
+.status-header:hover .edit-status-btn {
+    display: inline-block !important;
+    cursor: pointer;
+}
