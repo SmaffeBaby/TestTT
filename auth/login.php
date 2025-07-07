@@ -10,9 +10,9 @@ global $USER;
 $error = '';
 $success = '';
 
-// Если пользователь уже авторизован — редирект на главную или задачи
+
 if ($USER->IsAuthorized()) {
-    LocalRedirect('/tasks.php'); // например, ваша страница с задачами
+    LocalRedirect('/');
     exit;
 }
 
@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
         global $USER;
         $res = $USER->Login($login, $password);
         if ($res === true) {
-            LocalRedirect('/tasks.php'); // редирект после успешного входа
+            LocalRedirect('/');
             exit;
         } else {
             $error = "Неверный логин или пароль.";
