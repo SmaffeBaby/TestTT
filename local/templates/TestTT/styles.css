@@ -2,3 +2,18 @@
     display: inline-block !important;
     cursor: pointer;
 }
+
+.task-card {
+    transition: transform 0.3s ease;
+    cursor: grab;
+}
+
+.task-card.dragging {
+    opacity: 0.5;
+    cursor: grabbing;
+}
+
+.task-list.drag-over {
+    background-color: #f0f8ff; /* светло-голубой фон при наведении */
+    border: 2px dashed #007bff;
+}

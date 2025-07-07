@@ -21,8 +21,7 @@ $desc = $request->get('description');
 $datetime = $request->get('datetime');
 $oldStatus = $request->get('old_status');
 
-file_put_contents($_SERVER['DOCUMENT_ROOT'].'/edit_task_log.txt', "=== Начало запроса ===\n", FILE_APPEND);
-file_put_contents($_SERVER['DOCUMENT_ROOT'].'/edit_task_log.txt', "ID: $id\nNewStatus: $newStatus\nOldStatus: $oldStatus\nName: $name\nDesc: $desc\nDatetime: $datetime\n", FILE_APPEND);
+
 
 if (!$id || !$newStatus || !$name) {
     $response['error'] = 'Обязательные поля не заполнены';
@@ -54,6 +53,7 @@ function prepareDateTime($datetime) {
     }
 }
 
+// Получаем HL-блок для нового статуса
 $hlNew = HL\HighloadBlockTable::getList([
     'filter' => ['=TABLE_NAME' => $newStatus]
 ])->fetch();
@@ -70,6 +70,7 @@ $entityClassNew = $entityNew->getDataClass();
 if ($oldStatus && $oldStatus !== $newStatus) {
     file_put_contents($_SERVER['DOCUMENT_ROOT'].'/edit_task_log.txt', "Статус изменился, переносим задачу\n", FILE_APPEND);
 
+    // Получаем HL-блок старого статуса
     $hlOld = HL\HighloadBlockTable::getList([
         'filter' => ['=TABLE_NAME' => $oldStatus]
     ])->fetch();
@@ -83,6 +84,7 @@ if ($oldStatus && $oldStatus !== $newStatus) {
     $entityOld = HL\HighloadBlockTable::compileEntity($hlOld);
     $entityClassOld = $entityOld->getDataClass();
 
+    // Проверяем, что задача существует в старом HL-блоке
     $taskOld = $entityClassOld::getById($id)->fetch();
     if (!$taskOld) {
         $response['error'] = 'Задача не найдена в старом HL-блоке';
@@ -90,6 +92,7 @@ if ($oldStatus && $oldStatus !== $newStatus) {
         exit;
     }
 
+    // Удаляем запись из старого HL-блока
     $deleteResult = $entityClassOld::delete($id);
     file_put_contents($_SERVER['DOCUMENT_ROOT'].'/edit_task_log.txt', "Удаление старой записи: " . ($deleteResult->isSuccess() ? "успешно" : "ошибка") . "\n", FILE_APPEND);
 
@@ -106,7 +109,7 @@ if ($oldStatus && $oldStatus !== $newStatus) {
 
     $dt = prepareDateTime($datetime);
     if ($dt === false) {
-        $response['error'] = 'Ошибка даты';
+        $response['error'] = 'Ошибка обработки даты';
         echo json_encode($response);
         exit;
     } elseif ($dt !== null) {
@@ -114,7 +117,6 @@ if ($oldStatus && $oldStatus !== $newStatus) {
     }
 
     $addResult = $entityClassNew::add($fieldsToAdd);
-
 
     if ($addResult->isSuccess()) {
         $response['success'] = true;
@@ -125,6 +127,7 @@ if ($oldStatus && $oldStatus !== $newStatus) {
     echo json_encode($response);
     exit;
 } else {
+
     file_put_contents($_SERVER['DOCUMENT_ROOT'].'/edit_task_log.txt', "Статус не изменился, обновляем задачу\n", FILE_APPEND);
 
     $fieldsToUpdate = [
@@ -134,7 +137,7 @@ if ($oldStatus && $oldStatus !== $newStatus) {
 
     $dt = prepareDateTime($datetime);
     if ($dt === false) {
-        $response['error'] = 'Ошибка даты';
+        $response['error'] = 'Ошибка обработки даты';
         echo json_encode($response);
         exit;
     } elseif ($dt !== null) {
