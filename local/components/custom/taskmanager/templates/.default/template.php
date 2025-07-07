@@ -55,7 +55,7 @@ foreach ($arResult['TASKS'] as $task) {
 
 
 $customStatusTitles = [];
-$file = $_SERVER['DOCUMENT_ROOT'].'/local/status_titles.json';
+$file = $_SERVER['DOCUMENT_ROOT'].'/local/status_titles_' . $USER->GetID() . '.json';
 if (file_exists($file)) {
     $json = file_get_contents($file);
     $customStatusTitles = json_decode($json, true);
