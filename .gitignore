@@ -52,3 +52,4 @@ node_modules/
 .valet/
 .mamp/
 .opendserver/
+/edit_task_log.txt

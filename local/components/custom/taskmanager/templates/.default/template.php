@@ -28,7 +28,20 @@ $statusTitles = [
                             <li class="list-group-item">
                                 <strong><?= htmlspecialcharsbx($task['UF_NAME']) ?></strong><br>
                                 <small><?= nl2br(htmlspecialcharsbx($task['UF_DESCRIPTION'])) ?></small><br>
-                                <small class="text-muted"><?= htmlspecialcharsbx($task['UF_DATETIME']) ?></small>
+                                <small class="text-muted"><?= htmlspecialcharsbx($task['UF_DATETIME']) ?></small><br>
+
+                                <button
+                                        class="btn btn-sm btn-outline-primary mt-2 edit-task-btn"
+                                        data-id="<?= $task['ID'] ?>"
+                                        data-status="<?= $task['STATUS'] ?>"
+                                        data-name="<?= htmlspecialcharsbx($task['UF_NAME']) ?>"
+                                        data-description="<?= htmlspecialcharsbx($task['UF_DESCRIPTION']) ?>"
+                                        data-datetime="<?= date('Y-m-d\TH:i', strtotime($task['UF_DATETIME'])) ?>"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#editTaskModal"
+                                >
+                                    ✏️ Редактировать
+                                </button>
                             </li>
                         <?php endforeach; ?>
                     </ul>
@@ -40,14 +53,14 @@ $statusTitles = [
     </div>
 </div>
 
-<!-- КНОПКА -->
+
 <div class="text-center mt-4">
     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTaskModal">
         ➕ Создать задачу
     </button>
 </div>
 
-<!-- МОДАЛЬНОЕ ОКНО -->
+
 <div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <form id="add-task-form" class="modal-content">
@@ -84,26 +97,103 @@ $statusTitles = [
     </div>
 </div>
 
+
+<div class="modal fade" id="editTaskModal" tabindex="-1" aria-labelledby="editTaskModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form id="edit-task-form" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Редактировать задачу</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="id">
+                <input type="hidden" name="old_status" value="">
+                <div class="mb-3">
+                    <label class="form-label">Статус</label>
+                    <select class="form-select" name="status" required>
+                        <option value="task_to_do">Надо сделать</option>
+                        <option value="task_done">Выполнено</option>
+                        <option value="task_closed">Завершено</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Название</label>
+                    <input type="text" class="form-control" name="name" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Описание</label>
+                    <textarea class="form-control" name="description"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Дата и время</label>
+                    <input type="datetime-local" class="form-control" name="datetime">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success">Сохранить изменения</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
 <script>
-    document.getElementById('add-task-form').addEventListener('submit', function(e) {
-        e.preventDefault();
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('add-task-form').addEventListener('submit', function(e) {
+            e.preventDefault();
 
-        const form = e.target;
-        const formData = new FormData(form);
+            const form = e.target;
+            const formData = new FormData(form);
 
-        fetch('/local/components/custom/taskmanager/ajax/add_task.php', {
-            method: 'POST',
-            body: formData
-        })
-            .then(res => res.json())
-            .then(result => {
-                if (result.success) {
-                    alert('Задача добавлена!');
-                    location.reload();
-                } else {
-                    alert('Ошибка: ' + result.error);
-                }
+            fetch('/local/components/custom/taskmanager/ajax/add_task.php', {
+                method: 'POST',
+                body: formData
             })
-            .catch(err => alert('Сбой запроса'));
+                .then(res => res.json())
+                .then(result => {
+                    if (result.success) {
+                        alert('Задача добавлена!');
+                        location.reload();
+                    } else {
+                        alert('Ошибка: ' + result.error);
+                    }
+                })
+                .catch(() => alert('Сбой запроса'));
+        });
+
+        document.querySelectorAll('.edit-task-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const form = document.getElementById('edit-task-form');
+                form.querySelector('[name="id"]').value = button.dataset.id;
+                form.querySelector('[name="status"]').value = button.dataset.status;
+                form.querySelector('[name="old_status"]').value = button.dataset.status;
+                form.querySelector('[name="name"]').value = button.dataset.name;
+                form.querySelector('[name="description"]').value = button.dataset.description;
+                form.querySelector('[name="datetime"]').value = button.dataset.datetime;
+            });
+        });
+
+        document.getElementById('edit-task-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const form = e.target;
+            const formData = new FormData(form);
+
+            fetch('/local/components/custom/taskmanager/ajax/edit_task.php', {
+                method: 'POST',
+                body: formData
+            })
+                .then(res => res.json())
+                .then(result => {
+                    if (result.success) {
+                        alert('Задача обновлена!');
+                        location.reload();
+                    } else {
+                        alert('Ошибка: ' + result.error);
+                    }
+                })
+                .catch(() => alert('Сбой запроса'));
+        });
     });
+
 </script>
