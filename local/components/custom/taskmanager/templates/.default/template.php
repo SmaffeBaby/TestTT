@@ -96,28 +96,30 @@ $statusTitles = [
                                 data-description="<?= htmlspecialcharsbx($task['UF_DESCRIPTION']) ?>"
                                 data-datetime="<?= date('Y-m-d\TH:i', strtotime($task['UF_DATETIME'])) ?>"
                             >
-                                <strong><?= htmlspecialcharsbx($task['UF_NAME']) ?></strong><br>
-                                <small><?= nl2br(htmlspecialcharsbx($task['UF_DESCRIPTION'])) ?></small><br>
-                                <small class="text-muted"><?= htmlspecialcharsbx($task['UF_DATETIME']) ?></small><br>
-
-                                <button
-                                        class="btn btn-sm btn-outline-primary mt-2 edit-task-btn"
-                                        data-id="<?= $task['ID'] ?>"
-                                        data-status="<?= $task['STATUS'] ?>"
-                                        data-name="<?= htmlspecialcharsbx($task['UF_NAME']) ?>"
-                                        data-description="<?= htmlspecialcharsbx($task['UF_DESCRIPTION']) ?>"
-                                        data-datetime="<?= date('Y-m-d\TH:i', strtotime($task['UF_DATETIME'])) ?>"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#editTaskModal"
-                                >
-                                    ✏️ Редактировать
-                                </button>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h5><?= htmlspecialcharsbx($task['UF_NAME']) ?></h5>
+                                        <p><?= nl2br(htmlspecialcharsbx($task['UF_DESCRIPTION'])) ?></p>
+                                        <small class="text-muted"><?= htmlspecialcharsbx($task['UF_DATETIME']) ?></small>
+                                    </div>
+                                    <button
+                                            class="btn btn-sm btn-primary edit-task-btn"
+                                            data-id="<?= $task['ID'] ?>"
+                                            data-status="<?= $task['STATUS'] ?>"
+                                            data-name="<?= htmlspecialcharsbx($task['UF_NAME']) ?>"
+                                            data-description="<?= htmlspecialcharsbx($task['UF_DESCRIPTION']) ?>"
+                                            data-datetime="<?= date('Y-m-d\TH:i', strtotime($task['UF_DATETIME'])) ?>"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#editTaskModal"
+                                    >
+                                        ✏️ Редактировать
+                                    </button>
+                                </div>
                             </li>
                         <?php endforeach; ?>
-                    <?php else: ?>
-
                     <?php endif; ?>
                 </ul>
+
 
             </div>
         <?php endforeach; ?>

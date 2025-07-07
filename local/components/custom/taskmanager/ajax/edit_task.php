@@ -1,10 +1,11 @@
 <?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
+ini_set('error_log', $_SERVER['DOCUMENT_ROOT'] . '/local/logs/php_errors.log');
 
 define('NO_KEEP_STATISTIC', true);
 define('NOT_CHECK_PERMISSIONS', true);
-require $_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/prolog_before.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/main/include/prolog_before.php';
 
 use Bitrix\Main\Loader;
 use Bitrix\Highloadblock as HL;
@@ -12,108 +13,145 @@ use Bitrix\Main\Context;
 use Bitrix\Main\Type\DateTime;
 
 global $USER;
-
 $response = ['success' => false];
-$request  = Context::getCurrent()->getRequest();
 
-$id        = (int)$request->get('id');
-$newStatus = trim($request->get('status'));
-$name      = trim($request->get('name'));
-$desc      = trim($request->get('description'));
-$datetime  = $request->get('datetime');
-$oldStatus = trim($request->get('old_status'));
+$request = Context::getCurrent()->getRequest();
+$id = (int)$request->get('id');
+$newStatus = trim($request->get('status') ?? '');
+$name = trim($request->get('name') ?? '');
+$desc = trim($request->get('description') ?? '');
+$datetimeRaw = $request->get('datetime');
+$oldStatus = trim($request->get('old_status') ?? '');
 
+function getEntityByTable(string $tableName)
+{
+    $hlblock = HL\HighloadBlockTable::getList([
+        'filter' => ['=TABLE_NAME' => $tableName]
+    ])->fetch();
 
-if (!$USER->IsAuthorized()) {
-    $response['error'] = 'Авторизуйтесь';
-    echo json_encode($response); exit;
-}
-if (!$id || !$newStatus || !$name) {
-    $response['error'] = 'Обязательные поля не заполнены';
-    echo json_encode($response); exit;
-}
-if (!Loader::includeModule('highloadblock')) {
-    $response['error'] = 'Модуль highloadblock не подключен';
-    echo json_encode($response); exit;
+    if (!$hlblock) return null;
+
+    return HL\HighloadBlockTable::compileEntity($hlblock)->getDataClass();
 }
 
+function formatDatetime($datetime)
+{
+    if (!$datetime) return null;
 
-$dt = null;
-if ($datetime) {
     $datetime = str_replace('T', ' ', $datetime);
     if (strlen($datetime) === 16) $datetime .= ':00';
+
     try {
-        $dt = DateTime::createFromTimestamp((new \DateTime($datetime))->getTimestamp());
+        return DateTime::createFromTimestamp((new \DateTime($datetime))->getTimestamp());
     } catch (\Exception $e) {
-        $response['error'] = 'Неверная дата';
-        echo json_encode($response); exit;
+        return null;
     }
 }
 
-
-function getEntityByTable(string $table)
-{
-    $hl = HL\HighloadBlockTable::getList([
-        'filter' => ['=TABLE_NAME' => $table]
-    ])->fetch();
-    if (!$hl) return null;
-    return HL\HighloadBlockTable::compileEntity($hl)->getDataClass();
-}
-
-
-$NewEntity = getEntityByTable($newStatus);
-if (!$NewEntity) {
-    $response['error'] = "HL‑блок «$newStatus» не найден";
-    echo json_encode($response); exit;
-}
-
-$userId = $USER->GetID();
-
-
-if ($oldStatus && $oldStatus !== $newStatus) {
-
-    $OldEntity = getEntityByTable($oldStatus);
-    if (!$OldEntity) {
-        $response['error'] = "HL‑блок «$oldStatus» не найден";
-        echo json_encode($response); exit;
+try {
+    if (!$USER->IsAuthorized()) {
+        $response['error'] = 'Авторизуйтесь';
+        return;
     }
 
-
-    $task = $OldEntity::getById($id)->fetch();
-    if (!$task || $task['UF_USER_ID'] != $userId) {
-        $response['error'] = 'Задача не найдена или принадлежит другому пользователю';
-        echo json_encode($response); exit;
+    if (!$id || !$newStatus || !$name) {
+        $response['error'] = 'Обязательные поля не заполнены';
+        return;
     }
 
+    if (!Loader::includeModule('highloadblock')) {
+        $response['error'] = 'Модуль highloadblock не подключен';
+        return;
+    }
 
-    $OldEntity::delete($id);
+    $dt = formatDatetime($datetimeRaw);
+    if ($datetimeRaw && !$dt) {
+        $response['error'] = 'Неверная дата: ' . htmlspecialcharsbx($datetimeRaw);
+        return;
+    }
 
+    $NewEntity = getEntityByTable($newStatus);
+    if (!$NewEntity) {
+        $response['error'] = "HL-блок «" . htmlspecialcharsbx($newStatus) . "» не найден";
+        return;
+    }
 
-    $fields = [
-        'UF_USER_ID'    => $userId,
-        'UF_NAME'       => $name,
-        'UF_DESCRIPTION'=> $desc,
-    ];
-    if ($dt) $fields['UF_DATETIME'] = $dt;
+    $userId = $USER->GetID();
 
-    $addRes = $NewEntity::add($fields);
+    // Перемещение в другой статус
+    if ($oldStatus && $oldStatus !== $newStatus) {
+        $OldEntity = getEntityByTable($oldStatus);
+        if (!$OldEntity) {
+            $response['error'] = "HL-блок «" . htmlspecialcharsbx($oldStatus) . "» не найден";
+            return;
+        }
 
-    $response['success'] = $addRes->isSuccess();
-    if (!$addRes->isSuccess()) $response['error'] = implode(', ', $addRes->getErrorMessages());
+        $task = $OldEntity::getById($id)->fetch();
+        if (!$task || $task['UF_USER_ID'] != $userId) {
+            $response['error'] = 'Задача не найдена или принадлежит другому пользователю';
+            return;
+        }
 
-    echo json_encode($response); exit;
+        $OldEntity::delete($id);
+
+        $fields = [
+            'UF_USER_ID' => $userId,
+            'UF_NAME' => $name,
+            'UF_DESCRIPTION' => $desc,
+        ];
+        if ($dt) $fields['UF_DATETIME'] = $dt;
+
+        $addRes = $NewEntity::add($fields);
+
+        if ($addRes->isSuccess()) {
+            $response['success'] = true;
+            $response['task'] = [
+                'id' => $addRes->getId(),
+                'old_id' => $id,
+                'status' => $newStatus,
+                'name' => $name,
+                'description' => $desc,
+                'datetime' => $dt ? $dt->format('Y-m-d H:i:s') : ''
+            ];
+        } else {
+            $response['error'] = implode(', ', $addRes->getErrorMessages());
+        }
+
+    } else {
+        // Обновление задачи в текущем статусе
+        $task = $NewEntity::getById($id)->fetch();
+        if (!$task || $task['UF_USER_ID'] != $userId) {
+            $response['error'] = 'Задача не найдена или принадлежит другому пользователю';
+            return;
+        }
+
+        $fields = [
+            'UF_NAME' => $name,
+            'UF_DESCRIPTION' => $desc,
+            'UF_USER_ID' => $userId,
+        ];
+        if ($dt) $fields['UF_DATETIME'] = $dt;
+
+        $updRes = $NewEntity::update($id, $fields);
+
+        if ($updRes->isSuccess()) {
+            $response['success'] = true;
+            $response['task'] = [
+                'id' => $id,
+                'old_id' => $id,
+                'status' => $newStatus,
+                'name' => $name,
+                'description' => $desc,
+                'datetime' => $dt ? $dt->format('Y-m-d H:i:s') : ''
+            ];
+        } else {
+            $response['error'] = implode(', ', $updRes->getErrorMessages());
+        }
+    }
+
+} catch (\Exception $e) {
+    $response['error'] = 'Внутренняя ошибка сервера: ' . htmlspecialcharsbx($e->getMessage());
 }
 
-$fields = [
-    'UF_NAME'        => $name,
-    'UF_DESCRIPTION' => $desc,
-];
-if ($dt)          $fields['UF_DATETIME'] = $dt;
-$fields['UF_USER_ID'] = $userId;           // на всякий случай
-
-$updRes = $NewEntity::update($id, $fields);
-
-$response['success'] = $updRes->isSuccess();
-if (!$updRes->isSuccess()) $response['error'] = implode(', ', $updRes->getErrorMessages());
-
+header('Content-Type: application/json; charset=UTF-8');
 echo json_encode($response);

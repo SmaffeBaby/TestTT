@@ -12,9 +12,9 @@ global $USER;
 $response = ['success' => false];
 $request = Context::getCurrent()->getRequest();
 
-$status = $request->get('status');
-$name = $request->get('name');
-$desc = $request->get('description') ?? '';
+$status = trim($request->get('status'));
+$name = trim($request->get('name'));
+$desc = trim($request->get('description') ?? '');
 $datetimeStr = $request->get('datetime');
 
 if (!$USER->IsAuthorized()) {
@@ -30,7 +30,7 @@ if (!$status || !$name) {
 }
 
 if (!Loader::includeModule('highloadblock')) {
-    $response['error'] = 'Модуль HL не подключен';
+    $response['error'] = 'Модуль highloadblock не подключен';
     echo json_encode($response);
     exit;
 }
@@ -40,7 +40,7 @@ $hlblock = HL\HighloadBlockTable::getList([
 ])->fetch();
 
 if (!$hlblock) {
-    $response['error'] = 'HL-блок не найден';
+    $response['error'] = 'HL-блок не найден: ' . htmlspecialcharsbx($status);
     echo json_encode($response);
     exit;
 }
@@ -48,20 +48,21 @@ if (!$hlblock) {
 $entity = HL\HighloadBlockTable::compileEntity($hlblock);
 $entityClass = $entity->getDataClass();
 
+$datetime = null;
 if ($datetimeStr) {
     $datetimeStr = str_replace('T', ' ', $datetimeStr);
     if (strlen($datetimeStr) === 16) $datetimeStr .= ':00';
-
     try {
         $datetime = DateTime::createFromTimestamp((new \DateTime($datetimeStr))->getTimestamp());
     } catch (\Exception $e) {
-        $response['error'] = 'Некорректный формат даты и времени: ' . $datetimeStr;
+        $response['error'] = 'Некорректный формат даты и времени: ' . htmlspecialcharsbx($datetimeStr);
         echo json_encode($response);
         exit;
     }
 } else {
     $datetime = new DateTime();
 }
+
 $result = $entityClass::add([
     'UF_NAME' => $name,
     'UF_DESCRIPTION' => $desc,
@@ -69,9 +70,19 @@ $result = $entityClass::add([
     'UF_USER_ID' => $USER->GetID(),
 ]);
 
-$response['success'] = $result->isSuccess();
-if (!$result->isSuccess()) {
+if ($result->isSuccess()) {
+    $response['success'] = true;
+    $response['task'] = [
+        'id' => $result->getId(),
+        'status' => $status,
+        'name' => $name,
+        'description' => $desc,
+        'datetime' => $datetime->format('Y-m-d H:i:s')
+    ];
+} else {
     $response['error'] = implode(', ', $result->getErrorMessages());
 }
 
+header('Content-Type: application/json; charset=UTF-8');
 echo json_encode($response);
+?>
