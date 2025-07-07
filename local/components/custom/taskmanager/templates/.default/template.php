@@ -129,7 +129,8 @@ $statusTitles = [
                     <input type="datetime-local" class="form-control" name="datetime">
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-danger" id="delete-task-btn">Удалить</button>
                 <button type="submit" class="btn btn-success">Сохранить изменения</button>
             </div>
         </form>
@@ -194,6 +195,39 @@ $statusTitles = [
                 })
                 .catch(() => alert('Сбой запроса'));
         });
+    });
+
+
+    document.getElementById('delete-task-btn').addEventListener('click', function() {
+        if (!confirm('Вы действительно хотите удалить задачу?')) return;
+
+        const form = document.getElementById('edit-task-form');
+        const id = form.querySelector('[name="id"]').value;
+        const status = form.querySelector('[name="old_status"]').value; // чтобы знать из какого HL-блока удалять
+
+        if (!id || !status) {
+            alert('Не удалось определить задачу для удаления');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('id', id);
+        formData.append('status', status);
+
+        fetch('/local/components/custom/taskmanager/ajax/delete_task.php', {
+            method: 'POST',
+            body: formData
+        })
+            .then(res => res.json())
+            .then(result => {
+                if (result.success) {
+                    alert('Задача удалена');
+                    location.reload();
+                } else {
+                    alert('Ошибка: ' + result.error);
+                }
+            })
+            .catch(() => alert('Сбой запроса'));
     });
 
 </script>
