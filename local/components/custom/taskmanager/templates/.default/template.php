@@ -1,9 +1,53 @@
 <?php
+require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_before.php");
+
+global $USER;
+if (isset($_GET['logout']) && $_GET['logout'] === 'yes') {
+    $USER->Logout();
+    LocalRedirect('/auth/login.php'); // редирект после выхода
+    exit;
+}
+
+if (!$USER->IsAuthorized()) {
+    LocalRedirect('/auth/login.php');
+    exit;
+}
+
 $grouped = [
     'task_to_do' => [],
     'task_done' => [],
     'task_closed' => []
 ];
+
+use Bitrix\Highloadblock as HL;
+use Bitrix\Main\Loader;
+
+Loader::includeModule('highloadblock');
+
+$statusList = ['task_to_do', 'task_done', 'task_closed'];
+$arResult['TASKS'] = [];
+
+foreach ($statusList as $statusCode) {
+    $hlblock = HL\HighloadBlockTable::getList([
+        'filter' => ['=TABLE_NAME' => $statusCode]
+    ])->fetch();
+
+    if (!$hlblock) continue;
+
+    $entity = HL\HighloadBlockTable::compileEntity($hlblock);
+    $entityClass = $entity->getDataClass();
+
+    $rows = $entityClass::getList([
+        'filter' => ['UF_USER_ID' => $USER->GetID()],
+        'order' => ['UF_DATETIME' => 'ASC']
+    ])->fetchAll();
+
+    foreach ($rows as $row) {
+        $row['STATUS'] = $statusCode;
+        $arResult['TASKS'][] = $row;
+    }
+}
+
 
 foreach ($arResult['TASKS'] as $task) {
     $grouped[$task['STATUS']][] = $task;
@@ -88,7 +132,9 @@ $statusTitles = [
     </button>
 </div>
 
-
+<div class="text-center mt-4">
+    <a href="?logout=yes" class="btn btn-outline-danger">Выйти из аккаунта</a>
+</div>
 <div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <form id="add-task-form" class="modal-content">

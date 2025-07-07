@@ -8,12 +8,19 @@ use Bitrix\Highloadblock as HL;
 use Bitrix\Main\Context;
 use Bitrix\Main\Type\DateTime;
 
+global $USER;
 $response = ['success' => false];
 $request = Context::getCurrent()->getRequest();
 
 $status = $request['status'];
 $name = $request['name'];
 $desc = $request['description'] ?? '';
+
+if (!$USER->IsAuthorized()) {
+    $response['error'] = 'Пользователь не авторизован';
+    echo json_encode($response);
+    exit;
+}
 
 if (!$status || !$name) {
     $response['error'] = 'Не переданы обязательные поля';
@@ -43,7 +50,8 @@ $entityClass = $entity->getDataClass();
 $result = $entityClass::add([
     'UF_NAME' => $name,
     'UF_DESCRIPTION' => $desc,
-    'UF_DATETIME' => new DateTime(), // ✅ текущая дата/время как объект
+    'UF_DATETIME' => new DateTime(),
+    'UF_USER_ID' => $USER->GetID(),
 ]);
 
 $response['success'] = $result->isSuccess();
@@ -52,3 +60,4 @@ if (!$result->isSuccess()) {
 }
 
 echo json_encode($response);
+
