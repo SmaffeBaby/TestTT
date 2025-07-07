@@ -190,14 +190,20 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.append('description', draggedTask.dataset.description);
             formData.append('datetime', draggedTask.dataset.datetime);
 
-            fetch('/local/components/custom/taskmanager/ajax/edit_task.php', {
+            fetch('/local/components/custom/taskmanager/ajax/move_task.php', {
                 method: 'POST',
                 body: formData
             })
                 .then(res => res.json())
                 .then(result => {
                     if (result.success) {
-                        alert('Статус задачи обновлен!');
+                        if (result.new_id) {
+                            draggedTask.dataset.id = result.new_id;
+                            const editBtn = draggedTask.querySelector('.edit-task-btn');
+                            if (editBtn) editBtn.dataset.id = result.new_id;
+                        }
+
+                        alert('Статус задачи обновлён!');
                         const oldList = document.querySelector(`.task-list[data-status="${oldStatus}"]`);
                         if (oldList) updateEmptyMessage(oldList);
                         if (list) updateEmptyMessage(list);
@@ -207,7 +213,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 })
                 .catch(() => {
-                    alert('Ошибка сети при обновлении статуса');
                     location.reload();
                 });
         });
