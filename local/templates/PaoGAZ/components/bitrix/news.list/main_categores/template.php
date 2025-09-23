@@ -3,7 +3,7 @@ $firstRowCount = 5;
 $counter = 0;
 ?>
 
-<div class="cards-row" style="display:flex; flex-wrap:wrap; justify-content:center; max-width:1700px; margin:0 auto;">
+<div class="cards-row" style="display:flex; flex-wrap:wrap; justify-content:center; max-width:1700px; margin:0 auto;padding-top: 30px;">
     <?foreach($arResult["ITEMS"] as $arItem):?>
         <?php
         $imgSrc = '';
