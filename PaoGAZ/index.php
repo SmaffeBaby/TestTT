@@ -11,3 +11,6 @@ if (file_exists($templatePath)) {
 } else {
     echo "Файл шаблона не найден: " . $templatePath;
 }
+
+
+require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php");
