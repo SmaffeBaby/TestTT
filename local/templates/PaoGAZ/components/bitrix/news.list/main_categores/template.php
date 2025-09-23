@@ -1,6 +1,12 @@
 <?php
-$firstRowCount = 5;
 $counter = 0;
+
+
+if (strpos($_SERVER["REQUEST_URI"], "1_more_dobycha.php") !== false) {
+    $firstRowCount = 4; //
+} else {
+    $firstRowCount = 5;
+}
 ?>
 
 <div class="cards-row" style="display:flex; flex-wrap:wrap; justify-content:center; max-width:1700px; margin:0 auto;padding-top: 30px;">
@@ -27,6 +33,7 @@ $counter = 0;
                 border-radius: 10px;
                 overflow: hidden;
                 padding-top: 15px;
+                white-space: inherit !important;
            ">
 
             <span style="font-size:18px; text-align:center; padding:0 10px; margin-bottom:10px;"><?=$arItem["NAME"]?></span>

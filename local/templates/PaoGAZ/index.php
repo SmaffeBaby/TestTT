@@ -4,9 +4,11 @@
 
 <div class="d-flex align-items-start mt-4" style="gap:30px;">
     <div class="logo-block d-flex flex-column align-items-center" style="margin-top: -5%;">
-        <img src="<?=SITE_TEMPLATE_PATH?>/img/atlas_logo_svg.svg"
-             alt="Atlas Logo"
-             style="height:250px; display:block;padding-left: 30px;">
+        <a href="<?=SITE_DIR?>" style="display:block;">
+            <img src="<?=SITE_TEMPLATE_PATH?>/img/atlas_logo_svg.svg"
+                 alt="Atlas Logo"
+                 style="height:250px; display:block; padding-left: 30px;">
+        </a>
 
         <div class="logo-links d-flex flex-column mt-3" style="gap:10px;padding-left: 30px;">
             <?$APPLICATION->IncludeComponent(
@@ -35,7 +37,8 @@
                 "CACHE_TYPE" => "A",
                 "CACHE_TIME" => "3600",
                 "DISPLAY_PANEL" => "N",
-                "SET_TITLE" => "N"
+                "SET_TITLE" => "N",
+                "PARENT_SECTION_CODE" => "in-main"
             ]
         );?>
     </div>

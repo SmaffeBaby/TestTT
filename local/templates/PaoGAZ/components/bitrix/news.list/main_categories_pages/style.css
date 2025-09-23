@@ -1,0 +1,42 @@
+.plain-links-scroll {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 10px;
+    padding: 10px 0 0 30px !important;
+    scrollbar-width: thin;
+}
+
+.plain-links-scroll::-webkit-scrollbar {
+    height: 8px;
+}
+.plain-links-scroll::-webkit-scrollbar-thumb {
+    background-color: #007ac3;
+    border-radius: 4px;
+}
+.plain-links-scroll::-webkit-scrollbar-track {
+    background: #f0f0f0;
+}
+
+.icon-card {
+    background-color: #007ac3;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 10px 10px 0 0 !important;
+    padding: 10px 20px;
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
+    min-width: auto !important;
+    white-space: nowrap; /* запрет переноса текста внутри */
+}
+.icon-card:hover {
+    background-color: #005999;
+}
+.icon-card.active-card {
+    background-color: #fff;
+    color: #000;
+    border: 2px solid #ffffff;
+    border-radius: 10px 10px 0 0;
+    box-shadow: 8px 0px 23px 5px rgba(0, 0, 0, 0.2);
+}
