@@ -1,15 +1,15 @@
 <?php
+require __DIR__ . '/mutator/styleMutator.php';
+$cardStyle = getCardStyle($arResult["ITEMS"]);
+
 $counter = 0;
 
-if (strpos($_SERVER["REQUEST_URI"], "1_more_dobycha.php") !== false) {
-    $firstRowCount = 4;
-} else {
-    $firstRowCount = 5;
-}
+
+$firstRowCount = (strpos($_SERVER["REQUEST_URI"], "1_more_dobycha.php") !== false) ? 4 : 5;
 ?>
 
-<div class="cards-row" style="display:flex; flex-wrap:wrap; justify-content:center; max-width:1700px; margin:0 auto;padding-top: 30px;">
-    <?foreach($arResult["ITEMS"] as $arItem):
+<div class="cards-row" style="display:flex; flex-wrap:wrap; justify-content:center; max-width:1700px; margin:0 auto; padding-top:30px;">
+    <?php foreach($arResult["ITEMS"] as $arItem):
 
 
         $this->AddEditAction(
@@ -27,7 +27,7 @@ if (strpos($_SERVER["REQUEST_URI"], "1_more_dobycha.php") !== false) {
 
         $imgSrc = '';
         if (!empty($arItem["PROPERTIES"]["IMAGE_MAIN"]["VALUE"])) {
-            if(is_array($arItem["PROPERTIES"]["IMAGE_MAIN"]["VALUE"])) {
+            if (is_array($arItem["PROPERTIES"]["IMAGE_MAIN"]["VALUE"])) {
                 $imgSrc = CFile::GetPath($arItem["PROPERTIES"]["IMAGE_MAIN"]["VALUE"][0]);
             } else {
                 $imgSrc = CFile::GetPath($arItem["PROPERTIES"]["IMAGE_MAIN"]["VALUE"]);
@@ -38,18 +38,8 @@ if (strpos($_SERVER["REQUEST_URI"], "1_more_dobycha.php") !== false) {
         <a href="<?=$arItem["PROPERTIES"]["LINK"]["VALUE"]?>"
            id="<?=$this->GetEditAreaId($arItem['ID']);?>"
            class="icon-card m-3 d-flex flex-column align-items-center justify-content-start"
-           style="
-                width: 200px;
-                height: 300px;
-                background-color: #ffffff;
-                color: #007ac3;
-                border: 1px solid #007ac3;
-                text-decoration: none;
-                border-radius: 10px;
-                overflow: hidden;
-                padding-top: 15px;
-                white-space: inherit !important;
-           ">
+           style="<?=$cardStyle;?>"
+        >
 
             <span style="font-size:18px; text-align:center; padding:0 10px; margin-bottom:10px;"><?=$arItem["NAME"]?></span>
 
@@ -63,6 +53,8 @@ if (strpos($_SERVER["REQUEST_URI"], "1_more_dobycha.php") !== false) {
 
         <?php
         $counter++;
-        if($counter == $firstRowCount) echo '<div style="flex-basis:100%; height:0;"></div>';
-    endforeach;?>
+        if ($counter == $firstRowCount) {
+            echo '<div style="flex-basis:100%; height:0;"></div>';
+        }
+    endforeach; ?>
 </div>
