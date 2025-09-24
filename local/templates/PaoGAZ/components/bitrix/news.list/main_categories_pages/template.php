@@ -10,6 +10,14 @@ $currentPage = basename($APPLICATION->GetCurPage(false)); // текущий фа
 
         $equivalentPages = [
             '1_more_dobycha.php' => ['1_more_dobycha.php', '1_2_tecknologii_explotacii.php'],
+            'svodka_2_3_1_podvodniy_sposob_explotacii.php' => ['svodka_2_3_1_podvodniy_sposob_explotacii.php'],
+            'primeneniye_v_ip_2_3_1_podvodniy_sposob_explotacii.php' => ['primeneniye_v_ip_2_3_1_podvodniy_sposob_explotacii.php'],
+            'explotiruyemoe_2_3_1_podvodniy_sposob_explotacii.php' => ['explotiruyemoe_2_3_1_podvodniy_sposob_explotacii.php'],
+            'proizvoditeli_2_3_1_podvodniy_sposob_explotacii.php' => ['proizvoditeli_2_3_1_podvodniy_sposob_explotacii.php'],
+            'tekushiy_status_2_3_1_podvodniy_sposob_explotacii.php' => ['tekushiy_status_2_3_1_podvodniy_sposob_explotacii.php'],
+            'niokrPatents_2_3_1_podvodniy_sposob_explotacii.php' => ['niokrPatents_2_3_1_podvodniy_sposob_explotacii.php'],
+            'zakupki_2_3_1_podvodniy_sposob_explotacii.php' => ['zakupki_2_3_1_podvodniy_sposob_explotacii.php'],
+            'NtDotchety_2_3_1_podvodniy_sposob_explotacii.php' => ['NtDotchety_2_3_1_podvodniy_sposob_explotacii.php'],
             'other_page.php' => ['other_page.php']
         ];
 

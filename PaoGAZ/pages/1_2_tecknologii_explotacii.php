@@ -25,6 +25,30 @@ $APPLICATION->SetTitle("Технологии эксплотации скважи
 
 </div>
 
+<style>
+    .gray-btn {
+        display: inline-block;
+        margin-top: 20px;
+        margin-left: 10px;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 8px;
+        background-color: #6c757d;
+        color: #fff;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+    }
+
+    .gray-btn:hover {
+        background-color: #5a6268; /* чуть темнее */
+    }
+</style>
+
+<a href="/pages/1_more_dobycha.php"
+   class="gray-btn">
+    Вернуться к УВ на море
+</a>
+
 <div style="font-size: 38px; font-weight:bold; color:#007ac3; margin-top: 80px; padding-right: 40px; text-align: right;">
     Технологии эксплотации скважин
 </div>
@@ -67,7 +91,8 @@ $APPLICATION->SetTitle("Технологии эксплотации скважи
                 "CACHE_TIME" => "3600",
                 "DISPLAY_PANEL" => "N",
                 "SET_TITLE" => "N",
-                "PARENT_SECTION_CODE" => "teckno-explotacii"
+                "PARENT_SECTION_CODE" => "teckno-explotacii",
+                "INCLUDE_SUBSECTIONS" => "N"
             ]
         );?>
     </div>

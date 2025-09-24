@@ -22,6 +22,29 @@ $APPLICATION->SetTitle("Добыча УВ на море");
         ]
     );?>
 
+    <style>
+        .gray-btn {
+            display: inline-block;
+            margin-top: 20px;
+            margin-left: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 8px;
+            background-color: #6c757d;
+            color: #fff;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .gray-btn:hover {
+            background-color: #5a6268; /* чуть темнее */
+        }
+    </style>
+
+    <a href="/"
+       class="gray-btn">
+        Вернуться к направлениям
+    </a>
 
 </div>
 
