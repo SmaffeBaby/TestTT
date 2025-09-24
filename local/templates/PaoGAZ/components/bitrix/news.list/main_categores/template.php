@@ -1,17 +1,30 @@
 <?php
 $counter = 0;
 
-
 if (strpos($_SERVER["REQUEST_URI"], "1_more_dobycha.php") !== false) {
-    $firstRowCount = 4; //
+    $firstRowCount = 4;
 } else {
     $firstRowCount = 5;
 }
 ?>
 
 <div class="cards-row" style="display:flex; flex-wrap:wrap; justify-content:center; max-width:1700px; margin:0 auto;padding-top: 30px;">
-    <?foreach($arResult["ITEMS"] as $arItem):?>
-        <?php
+    <?foreach($arResult["ITEMS"] as $arItem):
+
+
+        $this->AddEditAction(
+            $arItem['ID'],
+            $arItem['EDIT_LINK'],
+            CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_EDIT")
+        );
+        $this->AddDeleteAction(
+            $arItem['ID'],
+            $arItem['DELETE_LINK'],
+            CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_DELETE"),
+            ["CONFIRM" => GetMessage('CT_BNL_ELEMENT_DELETE_CONFIRM')]
+        );
+
+
         $imgSrc = '';
         if (!empty($arItem["PROPERTIES"]["IMAGE_MAIN"]["VALUE"])) {
             if(is_array($arItem["PROPERTIES"]["IMAGE_MAIN"]["VALUE"])) {
@@ -21,7 +34,9 @@ if (strpos($_SERVER["REQUEST_URI"], "1_more_dobycha.php") !== false) {
             }
         }
         ?>
+
         <a href="<?=$arItem["PROPERTIES"]["LINK"]["VALUE"]?>"
+           id="<?=$this->GetEditAreaId($arItem['ID']);?>"
            class="icon-card m-3 d-flex flex-column align-items-center justify-content-start"
            style="
                 width: 200px;
@@ -49,6 +64,5 @@ if (strpos($_SERVER["REQUEST_URI"], "1_more_dobycha.php") !== false) {
         <?php
         $counter++;
         if($counter == $firstRowCount) echo '<div style="flex-basis:100%; height:0;"></div>';
-        ?>
-    <?endforeach;?>
+    endforeach;?>
 </div>
