@@ -4,6 +4,8 @@ body {
     color: #333;
 }
 
+/*Хедер*/
+
 .custom-header-block {
     width: calc(100% - 80px);
     max-width: 1840px;
@@ -56,4 +58,135 @@ body {
     width: 206px;
     height: 68px;
     object-fit: contain;
+}
+
+/*Главный блок*/
+
+.custom-block {
+    margin: 20px 40px 0 40px;
+    border-radius: 12px;
+    min-height: 600px;
+    background: #FFFFFF;
+    border-style: solid;
+    border-width: 0px 1px 1px 0px;
+    border-color: #EAECF8;
+    display: flex;
+    gap: 32px;
+
+    box-shadow:
+            5px 5px 20px 0px #98A0D299,
+            -5px -5px 20px 5px #FFFFFFC7;
+}
+
+/*Страница поиска*/
+
+.search-header {
+    width: 100%;
+    height: 96px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    border-radius: 12px 12px 0 0;
+    background: #FFFFFF;
+    border-style: solid;
+    border-width: 0px 1px 1px 0px;
+    border-color: #EAECF8;
+    box-shadow:
+            5px 5px 20px 0px #98A0D233,
+            -5px -5px 20px 5px #F6F7FD;
+}
+
+.search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-input {
+    width: 680px;
+    height: 40px;
+    padding: 12px 60px 12px 20px;
+    border-radius: 22px;
+    border: none;
+    outline: none;
+    background: #FFFFFF;
+    box-shadow:
+            -5px -5px 10px 0px #FCFEFF inset,
+            5px 5px 10px 0px #D1D9E6CC inset;
+    font-size: 16px;
+}
+
+.search-icon-btn {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.search-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.filters-btn {
+    margin-left: 8px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.filters-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.favorites-btn {
+    margin-left: 8px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.favorites-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.navigation-wrapper {
+    margin-left: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.navigation-text {
+    display: flex;
+    gap: 20px;
+    font-family: Montserrat, sans-serif;
+    font-weight: 400;
+    font-size: 12px;
+}
+
+.navigation-text a {
+    text-decoration: none;
+    color: #000;
+    display: flex;
+    align-items: center;
+}
+
+.help-btn {
+    margin-left: auto; /* отодвигает кнопку помощи в самый правый угол */
+    margin-right: -30px; /* 20px от края */
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
 }

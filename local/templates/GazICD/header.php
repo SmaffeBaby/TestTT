@@ -20,8 +20,8 @@ use Bitrix\Main\Page\Asset;
         <img src="<?=SITE_TEMPLATE_PATH?>/img/gazprom-inform 50.svg" alt="Газпром Информ">
     </div>
     <nav class="nav">
-        <a href="#">Ссылка 1</a>
-        <a href="#">Ссылка 2</a>
-        <a href="#">Ссылка 3</a>
+        <a href="#">Телефонный справочник</a>
+        <a href="#">Газпром</a>
+        <a href="#">Газпром информ</a>
     </nav>
 </div>
