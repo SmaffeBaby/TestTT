@@ -31,7 +31,7 @@
     white-space: nowrap; /* запрет переноса текста внутри */
 }
 .icon-card:hover {
-    background-color: #005999;
+    background-color: #4fbbff;
 }
 .icon-card.active-card {
     background-color: #fff;

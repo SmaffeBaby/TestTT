@@ -6,18 +6,22 @@
         ?>
         <a href="<?=$link?>"
            style="
-                display:block;
-                text-decoration:none;
-                color:#ffffff;
-                background-color:#007ac3;
-                text-align:center;
-                padding:10px 20px;
-                border-radius:6px;
-                font-weight:bold;
-                transition: background-color 0.2s;
-                margin-bottom:10px;
-           "
-           onmouseover="this.style.backgroundColor='#005ea3';"
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        text-align:center;
+        text-decoration:none;
+        color:#ffffff;
+        background-color:#007ac3;
+        padding:10px 20px;
+        border-radius:6px;
+        height:60px;
+        font-weight:bold;
+        transition: background-color 0.2s;
+        margin-bottom:10px;
+        line-height:1.2;          /* <-- чтобы строки не слипались */
+   "
+           onmouseover="this.style.backgroundColor='#4fbbff';"
            onmouseout="this.style.backgroundColor='#007ac3';"
         >
             <?=$name?>

@@ -12,11 +12,12 @@ function getCardStyle(array $items): string
 
     if ($count <= 2) {
         return "
-            width: 400px;
-            height: 500px;
+            width: 300px;
+            height: 300px;
             background-color: #ffffff;
+            border-radius: 20px !important;
             color: #007ac3;
-            border: 2px solid #007ac3;
+            border: 1px solid #007ac3;
             text-decoration: none;
             border-radius: 12px;
             overflow: hidden;
@@ -31,7 +32,7 @@ function getCardStyle(array $items): string
             color: #007ac3;
             border: 1px solid #007ac3;
             text-decoration: none;
-            border-radius: 10px;
+            border-radius: 20px !important;
             overflow: hidden;
             padding-top: 15px;
             white-space: inherit !important;
@@ -44,7 +45,7 @@ function getCardStyle(array $items): string
             color: #007ac3;
             border: 1px solid #007ac3;
             text-decoration: none;
-            border-radius: 10px;
+            border-radius: 20px !important;
             overflow: hidden;
             padding-top: 15px;
             white-space: inherit !important;

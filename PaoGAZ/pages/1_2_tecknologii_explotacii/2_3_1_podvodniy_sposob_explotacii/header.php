@@ -24,7 +24,7 @@ $APPLICATION->SetTitle("Технологии эксплотации скважи
 
 <a href="/pages/1_2_tecknologii_explotacii.php"
    class="gray-btn">
-    Вернуться к Технологиям эксплотации скважин
+    Вернуться к Технологиям эксплуатации скважин
 </a>
 
 

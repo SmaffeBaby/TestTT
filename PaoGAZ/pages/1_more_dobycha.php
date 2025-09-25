@@ -98,23 +98,7 @@ $APPLICATION->SetTitle("Добыча УВ на море");
 
 </div>
 
-<style>
-    /* Стили для плашек */
-    .icon-card {
-        background-color: #007ac3;
-        color: #fff;
-        font-weight: bold;
-        border-radius: 6px;
-        padding: 10px 20px;
-        text-decoration: none;
-        text-align: center;
-        display: inline-block;
-        min-width: 150px;
-    }
-    .icon-card:hover {
-        background-color: #005999;
-    }
-</style>
+
 
 <?php
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");

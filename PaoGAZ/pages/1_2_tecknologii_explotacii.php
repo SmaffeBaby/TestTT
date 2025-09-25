@@ -50,7 +50,7 @@ $APPLICATION->SetTitle("Технологии эксплотации скважи
 </a>
 
 <div style="font-size: 38px; font-weight:bold; color:#007ac3; margin-top: 80px; padding-right: 40px; text-align: right;">
-    Технологии эксплотации скважин
+    Технологии эксплуатации скважин
 </div>
 
 <div class="d-flex align-items-start mt-4" style="gap:30px;">
@@ -99,23 +99,7 @@ $APPLICATION->SetTitle("Технологии эксплотации скважи
 
 </div>
 
-<style>
-    /* Стили для плашек */
-    .icon-card {
-        background-color: #007ac3;
-        color: #fff;
-        font-weight: bold;
-        border-radius: 6px;
-        padding: 10px 20px;
-        text-decoration: none;
-        text-align: center;
-        display: inline-block;
-        min-width: 150px;
-    }
-    .icon-card:hover {
-        background-color: #005999;
-    }
-</style>
+
 
 <?php
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");
