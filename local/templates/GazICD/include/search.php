@@ -1,7 +1,7 @@
 <div class="search-header">
     <form class="search-form" action="/search/" method="get">
         <div class="search-input-wrapper">
-            <input type="text" name="q" class="search-input" placeholder="Поиск..." />
+            <input type="text" name="q" class="search-input" placeholder="Поиск" />
             <button type="submit" class="search-icon-btn">
                 <img src="<?=SITE_TEMPLATE_PATH?>/img/search.svg" alt="search icon" class="search-icon">
             </button>

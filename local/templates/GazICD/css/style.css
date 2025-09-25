@@ -76,6 +76,7 @@ body {
     box-shadow:
             5px 5px 20px 0px #98A0D299,
             -5px -5px 20px 5px #FFFFFFC7;
+    flex-direction: column;
 }
 
 /*Страница поиска*/
@@ -189,4 +190,71 @@ body {
     cursor: pointer;
     display: flex;
     align-items: center;
+}
+
+#organization-container {
+    margin-top: 20px;
+}
+
+.navigation-text a {
+    position: relative;
+    padding-bottom: 5px;
+    text-decoration: none;
+    color: #000;
+}
+
+.navigation-text a.active {
+    color: #137FC4;
+}
+
+.navigation-text a.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -37px;
+    width: 100%;
+    height: 3px;
+    background: #137FC4;
+}
+
+
+/*local/templates/GazICD/components/bitrix/news.list/organization_list/template.php*/
+.organization-list {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+
+
+    opacity: 1;
+}
+
+.organization-item {
+    display: flex;
+    flex-direction: row; /* ставим в одну линию */
+    gap: 10px; /* расстояние между именем и филиалом */
+    align-items: center;
+    white-space: nowrap; /* запрещаем перенос текста */
+    overflow: hidden; /* скрывает лишнее, если не влезает */
+    text-overflow: ellipsis; /* добавляет троеточие (...) */
+}
+
+.organization-item strong {
+    font-weight: 400;
+    font-size: 16px;
+}
+
+.organization-item p {
+    font-weight: 400;
+    font-size: 16px;
+    margin: 0;
 }

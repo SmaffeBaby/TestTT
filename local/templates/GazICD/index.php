@@ -6,4 +6,6 @@
         array("MODE" => "html")
     );
     ?>
+
+    <div id="organization-container"></div>
 </div>
