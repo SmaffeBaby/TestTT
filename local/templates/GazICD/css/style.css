@@ -1,0 +1,59 @@
+body {
+    font-family: 'Montserrat', sans-serif !important;
+    font-weight: 400;
+    color: #333;
+}
+
+.custom-header-block {
+    width: calc(100% - 80px);
+    max-width: 1840px;
+    margin: 40px auto 0 auto;
+    height: 98px;
+    padding: 0 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* чтобы элементы начинались слева */
+    gap: 24px; /* расстояние между логотипом и навигацией */
+
+    border-radius: 12px;
+    background: #ffffff;; /* фон блока */
+
+    border-style: solid;
+    border-color: #EAECF8;
+    border-width: 0px 1px 1px 0px;
+
+    box-shadow:
+            5px 5px 20px 0px #98A0D299,
+            -5px -5px 20px 5px #FFFFFFC7;
+}
+
+.custom-header-block .nav {
+    display: flex;
+    gap: 24px; /* расстояние между ссылками */
+}
+
+.custom-header-block .nav a {
+    text-decoration: none;
+    color:#000000;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+}
+
+.custom-header-block .action-btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    background: #4A5DFF;
+    color: #fff;
+    cursor: pointer;
+}
+
+.logo img {
+    width: 206px;
+    height: 68px;
+    object-fit: contain;
+}
