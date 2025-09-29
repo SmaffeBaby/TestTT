@@ -7,6 +7,8 @@ require(__DIR__ . "/header.php");
      alt="NtDotchety_2_3_1_podvodniy_sposob_explotacii.png"
      style="height:90vh; width:auto; display:block; padding-left:10px; object-fit:contain;padding-top: 10px;">
 
+<!--Асистент-->
+<?$APPLICATION->IncludeFile(SITE_TEMPLATE_PATH."/include/assistent_more.php", [], ["MODE" => "php"]);?>
 
 <div class="d-flex align-items-start mt-4" style="gap:30px;">
 

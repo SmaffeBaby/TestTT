@@ -76,6 +76,8 @@ $APPLICATION->SetTitle("Добыча УВ на море");
         </div>
     </div>
 
+    <!--Асистент-->
+    <?$APPLICATION->IncludeFile(SITE_TEMPLATE_PATH."/include/assistant.php", [], ["MODE" => "php"]);?>
 
     <div class="component-block flex-grow-1">
         <?$APPLICATION->IncludeComponent(

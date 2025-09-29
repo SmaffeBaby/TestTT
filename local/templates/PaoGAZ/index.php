@@ -12,10 +12,10 @@
 
         <div class="logo-links d-flex flex-column mt-3" style="gap:10px;padding-left: 30px;">
             <?$APPLICATION->IncludeComponent(
-                "custom:main_links",  // имя твоего кастомного компонента
+                "custom:main_links",
                 "",
                 [
-                    "IBLOCK_ID" => 7, // ID инфоблока с ссылками
+                    "IBLOCK_ID" => 7,
                     "FIELD_CODE" => ["NAME"],
                     "PROPERTY_CODE" => ["LINK_URL","LINK_NAME"],
                     "CACHE_TYPE" => "A",
@@ -24,6 +24,9 @@
             );?>
         </div>
     </div>
+
+<!--Асистент-->
+    <?$APPLICATION->IncludeFile(SITE_TEMPLATE_PATH."/include/assistant.php", [], ["MODE" => "php"]);?>
 
     <div class="component-block flex-grow-1">
         <?$APPLICATION->IncludeComponent(

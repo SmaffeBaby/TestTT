@@ -78,6 +78,9 @@ $APPLICATION->SetTitle("Технологии эксплотации скважи
     </div>
 
 
+    <!--Асистент-->
+    <?$APPLICATION->IncludeFile(SITE_TEMPLATE_PATH."/include/assistant.php", [], ["MODE" => "php"]);?>
+
     <div class="component-block flex-grow-1">
         <?$APPLICATION->IncludeComponent(
             "bitrix:news.list",
