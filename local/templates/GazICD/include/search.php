@@ -21,9 +21,9 @@
     <!-- Навигация -->
     <div class="navigation-wrapper">
         <div class="navigation-text">
-            <a href="#">Работники</a>
+            <a href="/pages/workers.php">Работники</a>
             <a href="#">Подразделения</a>
-            <a href="#">Филиалы и организации</a>
+            <a href="/pages/organizations.php">Филиалы и организации</a>
             <a href="#">Обратная связь</a>
         </div>
     </div>

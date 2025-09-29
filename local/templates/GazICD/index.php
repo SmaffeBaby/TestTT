@@ -7,5 +7,5 @@
     );
     ?>
 
-    <div id="organization-container"></div>
+
 </div>
