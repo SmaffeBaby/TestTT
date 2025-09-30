@@ -8,7 +8,7 @@ $counter = 0;
 $firstRowCount = (strpos($_SERVER["REQUEST_URI"], "1_more_dobycha.php") !== false) ? 4 : 5;
 ?>
 
-<div class="cards-row" style="display:flex; flex-wrap:wrap; justify-content:center; max-width:1700px; margin:0 auto; padding-top:30px;">
+<div class="cards-row" style="display:flex; flex-wrap:wrap; justify-content:center; max-width:1700px; margin:0 auto; padding-top:30px; gap:30px;">
     <?php foreach($arResult["ITEMS"] as $arItem):
 
 

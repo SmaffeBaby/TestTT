@@ -32,6 +32,13 @@
 }
 .icon-card:hover {
     background-color: #4fbbff;
+    color: white;
+}
+
+
+.gray-btn:hover {
+    background-color: #5a6268;
+    color: white;
 }
 .icon-card.active-card {
     background-color: #fff;

@@ -61,7 +61,7 @@ $APPLICATION->SetTitle("Добыча УВ на море");
                  style="height:250px; display:block; padding-left: 30px;">
         </a>
 
-        <div class="logo-links d-flex flex-column mt-3" style="gap:10px; padding-left: 30px;">
+        <div class="under-logo logo-links d-flex flex-column mt-3" style="gap:10px; padding-left: 30px;">
             <?$APPLICATION->IncludeComponent(
                 "custom:main_links",
                 "",

@@ -7,7 +7,9 @@ use Bitrix\Main\Page\Asset;
     <?php $APPLICATION->ShowHead(); ?>
     <title><?php $APPLICATION->ShowTitle(); ?></title>
 
-
+    <?php
+    Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . "/css/style.css");
+    ?>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
