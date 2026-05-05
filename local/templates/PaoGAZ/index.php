@@ -1,3 +1,5 @@
+<?php global $APPLICATION;?>
+
 <div style="font-size: 38px;font-weight:bold;color:#007ac3;margin-top: 80px;padding-right: 40px;text-align: right;">
     Направления бизнеса ПАО "Газпром"
 </div>
@@ -11,7 +13,7 @@
         </a>
 
         <div class="under-logo logo-links d-flex flex-column mt-3" style="gap:10px;padding-left: 30px;">
-            <?$APPLICATION->IncludeComponent(
+            <?php $APPLICATION->IncludeComponent(
                 "custom:main_links",
                 "",
                 [
@@ -26,10 +28,10 @@
     </div>
 
 <!--Асистент-->
-    <?$APPLICATION->IncludeFile(SITE_TEMPLATE_PATH."/include/assistant.php", [], ["MODE" => "php"]);?>
+    <?php $APPLICATION->IncludeFile(SITE_TEMPLATE_PATH."/include/assistant.php", [], ["MODE" => "php"]);?>
 
     <div class="component-block flex-grow-1">
-        <?$APPLICATION->IncludeComponent(
+        <?php $APPLICATION->IncludeComponent(
             "bitrix:news.list",
             "main_categores",
             [
